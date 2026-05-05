@@ -8,12 +8,8 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-<<<<<<< HEAD
-          DrawerHeader(child: Text("BLoC Cubit")),
-=======
           const DrawerHeader(child: Text("Menu")),
 
->>>>>>> counter-home
           ListTile(
             title: Text("Home"),
             subtitle: const Text('Software Engineer'),
@@ -24,11 +20,6 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/');
             },
           ),
-<<<<<<< HEAD
-          const Divider(),
-=======
-
->>>>>>> counter-home
           ListTile(
             title: Text("Counter"),
             subtitle: const Text('Software Engineer'),
