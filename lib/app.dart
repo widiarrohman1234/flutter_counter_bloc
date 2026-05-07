@@ -22,7 +22,7 @@ class CounterApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/posts',
+        initialRoute: '/',
         routes: {
           '/': (_) => const HomePage(),
           '/counter': (_) => const CounterPage(),
