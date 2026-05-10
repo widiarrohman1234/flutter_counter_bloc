@@ -6,6 +6,10 @@ class CounterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return const CounterView();
+=======
+    return CounterView();
+>>>>>>> 3infinite_list
   }
 }
