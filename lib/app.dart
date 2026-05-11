@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_counter_bloc/core/theme/theme_cubit.dart';
 import 'package:flutter_counter_bloc/counter/counter.dart';
 import 'package:flutter_counter_bloc/home/view/home_page.dart';
+import 'package:flutter_counter_bloc/login/bloc/login_bloc.dart';
 import 'package:flutter_counter_bloc/login/view/login_page.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_bloc.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_event.dart';
@@ -22,6 +23,7 @@ class CounterApp extends StatelessWidget {
               PostBloc(httpClient: http.Client())..add(PostFetched()),
         ),
         BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(create: (_) => LoginBloc()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, state) {
