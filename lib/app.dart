@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_counter_bloc/core/theme/theme_cubit.dart';
 import 'package:flutter_counter_bloc/counter/counter.dart';
 import 'package:flutter_counter_bloc/home/view/home_page.dart';
+import 'package:flutter_counter_bloc/login/view/login_page.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_bloc.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_event.dart';
 import 'package:flutter_counter_bloc/posts/view/posts_page.dart';
@@ -29,11 +30,12 @@ class CounterApp extends StatelessWidget {
             darkTheme: ThemeData.dark(),
             themeMode: context.watch<ThemeCubit>().state,
             debugShowCheckedModeBanner: false,
-            initialRoute: '/',
+            initialRoute: '/login',
             routes: {
-              '/': (_) => const HomePage(),
+              '/home': (_) => const HomePage(),
               '/counter': (_) => const CounterPage(),
               '/posts': (_) => const PostsPage(),
+              '/login': (_) => const LoginPage()
             },
           );
         },
