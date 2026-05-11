@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_counter_bloc/core/theme/theme_cubit.dart';
 import 'package:flutter_counter_bloc/core/widgets/app_drawer.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_bloc.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_event.dart';
@@ -27,45 +28,86 @@ class _PostsListState extends State<PostsList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
-      builder: (context, state) {
-        switch (state.status) {
-          case PostStatus.failure:
-            print('failed to fetch data posts');
-            return Scaffold(
-              appBar: AppBar(title: Text("Post List")),
-              drawer: AppDrawer(),
-              body: Center(child: Text('Failed to fetch data posts')),
-            );
-          case PostStatus.success:
-            if (state.posts.isEmpty) {
-              print('no posts');
-              return Scaffold(
-                appBar: AppBar(title: Text("Post List")),
-                drawer: AppDrawer(),
-                body: Center(child: Text('no posts')),
-              );
-            }
-            return Scaffold(
-              appBar: AppBar(title: Text("Post List")),
-              drawer: AppDrawer(),
-              body: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return index >= state.posts.length
-                      ? const BottomLoader()
-                      : PostListItem(post: state.posts[index]);
-                },
-                itemCount: state.hasReachedMax
-                    ? state.posts.length
-                    : state.posts.length + 1,
-                controller: _scrollController,
-              ),
-            );
-
-          case PostStatus.initial:
-            return const Center(child: CircularProgressIndicator());
-        }
+    return BlocListener<ThemeCubit, ThemeMode>(
+      listener: (context, state) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              state == ThemeMode.dark ? "Dark Mode Aktif" : "Light Mode Aktif",
+            ),
+          ),
+        );
       },
+      child: BlocBuilder<PostBloc, PostState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case PostStatus.failure:
+              print('failed to fetch data posts');
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text("Post List"),
+                  actions: [
+                    IconButton(
+                      onPressed: () {
+                        context.read<ThemeCubit>().toggleTheme();
+                      },
+                      icon: Icon(Icons.dark_mode),
+                    ),
+                  ],
+                ),
+                drawer: AppDrawer(),
+                body: Center(child: Text('Failed to fetch data posts')),
+              );
+            case PostStatus.success:
+              if (state.posts.isEmpty) {
+                print('no posts');
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text("Post List"),
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          context.read<ThemeCubit>().toggleTheme();
+                        },
+                        icon: Icon(Icons.dark_mode),
+                      ),
+                    ],
+                  ),
+                  drawer: AppDrawer(),
+                  body: Center(child: Text('no posts')),
+                );
+              }
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text("Post List"),
+                  actions: [
+                    IconButton(
+                      onPressed: () {
+                        context.read<ThemeCubit>().toggleTheme();
+                      },
+                      icon: Icon(Icons.dark_mode),
+                    ),
+                  ],
+                ),
+                drawer: AppDrawer(),
+                body: ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return index >= state.posts.length
+                        ? const BottomLoader()
+                        : PostListItem(post: state.posts[index]);
+                  },
+                  itemCount: state.hasReachedMax
+                      ? state.posts.length
+                      : state.posts.length + 1,
+                  controller: _scrollController,
+                ),
+              );
+
+            case PostStatus.initial:
+              return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 

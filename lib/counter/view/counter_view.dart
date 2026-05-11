@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_counter_bloc/core/theme/theme_cubit.dart';
 import 'package:flutter_counter_bloc/core/widgets/app_drawer.dart';
 import 'package:flutter_counter_bloc/counter/cubit/counter_cubit.dart';
 import 'package:flutter_counter_bloc/counter/cubit/counter_state.dart';
@@ -10,29 +11,60 @@ class CounterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return BlocListener<CounterCubit, CounterState>(
-      listener: (context, state) {
-        // jika sampai 10 tampilkan snacBar menggunakan BlocListener
-        if (state.counter == 10) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text("Counter mencapai 10")));
-        }
-        // jika counter < 0, maka tampilkan alert dialog
-        if (state.counter < 0) {
-          showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text("Warning"),
-                content: Text("Counter Negatif!"),
+    return MultiBlocListener(
+      listeners: [
+        // bloc listener untuk counter
+        BlocListener<CounterCubit, CounterState>(
+          listener: (context, state) {
+            // jika sampai 10 tampilkan snacBar menggunakan BlocListener
+            if (state.counter == 10) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Counter mencapai 10")),
               );
-            },
-          );
-        }
-      },
+            }
+            // jika counter < 0, maka tampilkan alert dialog
+            if (state.counter < 0) {
+              showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    title: Text("Warning"),
+                    content: Text("Counter Negatif!"),
+                  );
+                },
+              );
+            }
+          },
+        ),
+
+        // Bloc Listener untuk theme
+        BlocListener<ThemeCubit, ThemeMode>(
+          listener: (context, state) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  state == ThemeMode.dark
+                      ? "Dark Mode Aktif"
+                      : "Light Mode Aktif",
+                ),
+              ),
+            );
+          },
+        ),
+      ],
       child: Scaffold(
-        appBar: AppBar(title: Text("Counter Page")),
+        
+        appBar: AppBar(
+          title: Text("Counter Page"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.read<ThemeCubit>().toggleTheme();
+              },
+              icon: Icon(Icons.dark_mode),
+            ),
+          ],
+        ),
         drawer: AppDrawer(),
         body: Center(
           child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_counter_bloc/core/theme/theme_cubit.dart';
 import 'package:flutter_counter_bloc/counter/counter.dart';
 import 'package:flutter_counter_bloc/home/view/home_page.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_bloc.dart';
@@ -19,14 +20,22 @@ class CounterApp extends StatelessWidget {
           create: (_) =>
               PostBloc(httpClient: http.Client())..add(PostFetched()),
         ),
+        BlocProvider(create: (_) => ThemeCubit()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/': (_) => const HomePage(),
-          '/counter': (_) => const CounterPage(),
-          '/posts': (_) => const PostsPage(),
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, state) {
+          return MaterialApp(
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: context.watch<ThemeCubit>().state,
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/',
+            routes: {
+              '/': (_) => const HomePage(),
+              '/counter': (_) => const CounterPage(),
+              '/posts': (_) => const PostsPage(),
+            },
+          );
         },
       ),
     );
