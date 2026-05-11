@@ -106,7 +106,7 @@ class _LoginViewState extends State<LoginView> {
                           // gunakan BLoC, bukan if else lagi
                           context.read<LoginBloc>().add(
                             LoginSubmitted(
-                              username: _username.text,
+                              identifier: _username.text,
                               password: _password.text,
                             ),
                           );

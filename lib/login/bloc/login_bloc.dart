@@ -1,23 +1,35 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_counter_bloc/login/models/login_model.dart';
+import 'package:flutter_counter_bloc/login/repository/login_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginInitial()) {
-    on<LoginEvent>(_onLoginEvent);
+  final LoginRepository loginRepository;
+  
+  
+  LoginBloc({required this.loginRepository}) : super(LoginInitial()) {
+    on<LoginSubmitted>(_onLoginSubmitted);
   }
 
-  void _onLoginEvent(LoginEvent event, Emitter<LoginState> emit) async {
-    if (event is LoginSubmitted) {
-      emit(LoginLoading());
-      await Future.delayed(const Duration(seconds: 2));
-      if (event.username == 'test' && event.password == '1234') {
-        emit(LoginSuccess());
-      } else {
-        emit(const LoginFailure(message: 'Invalid username or password'));
-      }
+  Future<void> _onLoginSubmitted(
+    LoginSubmitted event,
+
+    Emitter<LoginState> emit,
+  ) async {
+    emit(LoginLoading());
+
+    try {
+      final LoginModel login = await loginRepository.login(
+        identifier: event.identifier,
+        password: event.password,
+      );
+
+      emit(LoginSuccess(login: login));
+    } catch (e) {
+      emit(LoginFailure(message: e.toString()));
     }
   }
 }

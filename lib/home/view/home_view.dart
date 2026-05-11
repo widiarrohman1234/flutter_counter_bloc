@@ -5,6 +5,7 @@ import 'package:flutter_counter_bloc/counter/cubit/counter_cubit.dart';
 import 'package:flutter_counter_bloc/core/widgets/app_drawer.dart';
 import 'package:flutter_counter_bloc/counter/cubit/counter_cubit.dart';
 import 'package:flutter_counter_bloc/counter/cubit/counter_state.dart';
+import 'package:flutter_counter_bloc/login/bloc/login_bloc.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -39,6 +40,28 @@ class HomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              BlocBuilder<LoginBloc, LoginState>(
+                builder: (context, state) {
+                  if (state is LoginSuccess) {
+                    final user = state.login.user;
+
+                    return Column(
+                      children: [
+                        Text(
+                          'Welcome ${user?.username}',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        Text(user?.email ?? '-'),
+                      ],
+                    );
+                  }
+
+                  return const Text('User belum login');
+                },
+              ),
               BlocBuilder<CounterCubit, CounterState>(
                 builder: (context, state) {
                   return Text(
