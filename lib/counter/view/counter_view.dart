@@ -34,7 +34,7 @@ class CounterView extends StatelessWidget {
             }
           },
         ),
-                // Bloc Listener untuk theme
+        // Bloc Listener untuk theme
         BlocListener<ThemeCubit, ThemeMode>(
           listener: (context, state) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -50,7 +50,17 @@ class CounterView extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        appBar: AppBar(title: Text("Counter Page")),
+        appBar: AppBar(
+          title: Text("Counter Page"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.read<ThemeCubit>().toggleTheme();
+              },
+              icon: Icon(Icons.dark_mode),
+            ),
+          ],
+        ),
         drawer: AppDrawer(),
         body: Center(
           child: Column(

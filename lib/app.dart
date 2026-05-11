@@ -20,18 +20,22 @@ class CounterApp extends StatelessWidget {
           create: (_) =>
               PostBloc(httpClient: http.Client())..add(PostFetched()),
         ),
-        BlocProvider(create: (_) => ThemeCubit())
+        BlocProvider(create: (_) => ThemeCubit()),
       ],
-      child: MaterialApp(
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
-        themeMode: context.watch<ThemeCubit>().state,
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/': (_) => const HomePage(),
-          '/counter': (_) => const CounterPage(),
-          '/posts': (_) => const PostsPage(),
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, state) {
+          return MaterialApp(
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: context.watch<ThemeCubit>().state,
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/',
+            routes: {
+              '/': (_) => const HomePage(),
+              '/counter': (_) => const CounterPage(),
+              '/posts': (_) => const PostsPage(),
+            },
+          );
         },
       ),
     );
