@@ -29,11 +29,12 @@ class CounterApp extends StatelessWidget {
             darkTheme: ThemeData.dark(),
             themeMode: context.watch<ThemeCubit>().state,
             debugShowCheckedModeBanner: false,
-            initialRoute: '/',
+            initialRoute: '/login',
             routes: {
-              '/': (_) => const HomePage(),
+              '/home': (_) => const HomePage(),
               '/counter': (_) => const CounterPage(),
               '/posts': (_) => const PostsPage(),
+              '/lo': (_) => const PostsPage(),
             },
           );
         },
