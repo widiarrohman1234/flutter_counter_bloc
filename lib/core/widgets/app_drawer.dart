@@ -41,6 +41,18 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/posts');
             },
           ),
+
+          const Divider(),
+          ListTile(
+            title: Text("Logout"),
+            subtitle: const Text('Keluar dari aplikasi'),
+            leading: const Icon(Icons.logout, size: 40, color: Colors.blue),
+            trailing: const Icon(Icons.logout),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/login');
+            },
+          ),
         ],
       ),
     );
