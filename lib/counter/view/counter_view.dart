@@ -10,19 +10,46 @@ class CounterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Scaffold(
-      appBar: AppBar(title: Text("Counter Page")),
-      drawer: AppDrawer(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            BlocBuilder<CounterCubit, CounterState>(
-              builder: (context, state) {
-                return Text('${state.counter}', style: textTheme.displayMedium);
-              },
-            ),
+    return BlocListener<CounterCubit, CounterState>(
+      listener: (context, state) {
+        // TODO: implement listener
+
+        // jika sampai 10 tampilkan snacbBar menggunakan BlocListener
+        if (state.counter == 10) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text("Counter mencapai 10")));
+        }
+
+        // jika counter < 0, maka tampilkan alert dialog
+        if (state.counter < 0) {
+          showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text("Warning"),
+                content: Text("Counter Negatif!"),
+              );
+            },
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(title: Text("Counter Page")),
+        drawer: AppDrawer(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              BlocBuilder<CounterCubit, CounterState>(
+                builder: (context, state) {
+                  return Text(
+                    '${state.counter}',
+                    style: textTheme.displayMedium,
+                  );
+                },
+              ),
 
               // hanya build widget tertentu, tidak perlu semuanya
               BlocSelector<CounterCubit, CounterState, bool>(
@@ -31,25 +58,26 @@ class CounterView extends StatelessWidget {
                   return Text(isEven ? "Genap" : "Ganjil");
                 },
               ),
+            ],
+          ),
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            FloatingActionButton(
+              key: const Key('counterView_increment_floatActionButton'),
+              child: const Icon(Icons.add),
+              onPressed: () => context.read<CounterCubit>().increment(),
+            ),
+            SizedBox(height: 8),
+            FloatingActionButton(
+              key: const Key('counterView_decrement_floatActionButton'),
+              child: const Icon(Icons.remove),
+              onPressed: () => context.read<CounterCubit>().decrement(),
+            ),
           ],
         ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          FloatingActionButton(
-            key: const Key('counterView_increment_floatActionButton'),
-            child: const Icon(Icons.add),
-            onPressed: () => context.read<CounterCubit>().increment(),
-          ),
-          SizedBox(height: 8),
-          FloatingActionButton(
-            key: const Key('counterView_decrement_floatActionButton'),
-            child: const Icon(Icons.remove),
-            onPressed: () => context.read<CounterCubit>().decrement(),
-          ),
-        ],
       ),
     );
   }
