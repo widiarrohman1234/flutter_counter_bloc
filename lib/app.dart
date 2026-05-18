@@ -9,6 +9,9 @@ import 'package:flutter_counter_bloc/login/view/login_page.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_bloc.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_event.dart';
 import 'package:flutter_counter_bloc/posts/view/posts_page.dart';
+import 'package:flutter_counter_bloc/products/bloc/product_bloc.dart';
+import 'package:flutter_counter_bloc/products/product_page.dart';
+import 'package:flutter_counter_bloc/products/repository/product_repository.dart';
 import 'package:http/http.dart' as http;
 
 class CounterApp extends StatelessWidget {
@@ -20,6 +23,9 @@ class CounterApp extends StatelessWidget {
       providers: [
         RepositoryProvider(
           create: (_) => LoginRepository(httpClient: http.Client()),
+        ),
+        RepositoryProvider(
+          create: (_) => ProductRepository(httpClient: http.Client()),
         ),
       ],
       child: MultiBlocProvider(
@@ -33,6 +39,13 @@ class CounterApp extends StatelessWidget {
           BlocProvider(
             create: (context) =>
                 LoginBloc(loginRepository: context.read<LoginRepository>()),
+          ),
+          BlocProvider(
+            create: (context) => ProductBloc(
+              repository: context.read<ProductRepository>(),
+              token:
+                  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhcnJvaG1hbndpZGlAZ21haWwuY29tIiwiaWF0IjoxNzc5MTQ1NzQ0fQ.2s54oZdKLkGYZQUVIb8ZLot0biNNGKPJaLwmJbfdOIs',
+            ),
           ),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
@@ -48,6 +61,7 @@ class CounterApp extends StatelessWidget {
                 '/counter': (_) => const CounterPage(),
                 '/posts': (_) => const PostsPage(),
                 '/login': (_) => const LoginPage(),
+                '/products': (_) => const ProductPage(),
               },
             );
           },
