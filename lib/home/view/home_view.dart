@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_counter_bloc/core/theme/theme_cubit.dart';
 import 'package:flutter_counter_bloc/core/widgets/app_drawer.dart';
 import 'package:flutter_counter_bloc/counter/cubit/counter_cubit.dart';
 import 'package:flutter_counter_bloc/counter/cubit/counter_state.dart';
@@ -10,7 +11,17 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Home")),
+      appBar: AppBar(
+        title: const Text("Home"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<ThemeCubit>().toggleTheme();
+            },
+            icon: Icon(Icons.dark_mode),
+          ),
+        ],
+      ),
       drawer: AppDrawer(),
       body: Center(
         child: Column(
