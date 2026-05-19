@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_counter_bloc/auth/cubit/auth_cubit.dart';
 import 'package:flutter_counter_bloc/products/bloc/product_bloc.dart';
 import 'package:flutter_counter_bloc/products/models/product_model.dart';
 
-
 class ProductFormView extends StatefulWidget {
-
   final ProductModel? product;
 
-  const ProductFormView({
-    super.key,
-    this.product,
-  });
+  const ProductFormView({super.key, this.product});
 
   @override
-  State<ProductFormView> createState() =>
-      _ProductFormViewState();
+  State<ProductFormView> createState() => _ProductFormViewState();
 }
 
-class _ProductFormViewState
-    extends State<ProductFormView> {
-
+class _ProductFormViewState extends State<ProductFormView> {
   late TextEditingController nameController;
   late TextEditingController descriptionController;
   late TextEditingController stockController;
@@ -32,8 +25,7 @@ class _ProductFormViewState
     super.initState();
 
     nameController = TextEditingController(
-      text: widget.product?.name ??
-          widget.product?.name ?? '',
+      text: widget.product?.name ?? widget.product?.name ?? '',
     );
 
     descriptionController = TextEditingController(
@@ -57,58 +49,37 @@ class _ProductFormViewState
 
   @override
   Widget build(BuildContext context) {
-
     final isEdit = widget.product != null;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          isEdit
-              ? 'Update Product'
-              : 'Create Product',
-        ),
-      ),
+      appBar: AppBar(title: Text(isEdit ? 'Update Product' : 'Create Product')),
 
       body: BlocConsumer<ProductBloc, ProductState>(
-
         listener: (context, state) {
-
           if (state is ProductSuccess) {
-
-            ScaffoldMessenger.of(context)
-                .showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-              ),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
 
             Navigator.pop(context);
           }
 
           if (state is ProductFailure) {
-
-            ScaffoldMessenger.of(context)
-                .showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-              ),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
 
         builder: (context, state) {
-
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
 
             child: Column(
               children: [
-
                 TextField(
                   controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                  ),
+                  decoration: const InputDecoration(labelText: 'Name'),
                 ),
 
                 const SizedBox(height: 16),
@@ -116,9 +87,7 @@ class _ProductFormViewState
                 TextField(
                   controller: descriptionController,
                   maxLines: 5,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                  ),
+                  decoration: const InputDecoration(labelText: 'Description'),
                 ),
 
                 const SizedBox(height: 16),
@@ -126,9 +95,7 @@ class _ProductFormViewState
                 TextField(
                   controller: stockController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Stock',
-                  ),
+                  decoration: const InputDecoration(labelText: 'Stock'),
                 ),
 
                 const SizedBox(height: 16),
@@ -151,70 +118,53 @@ class _ProductFormViewState
                   height: 50,
 
                   child: ElevatedButton(
-
                     onPressed: state is ProductLoading
                         ? null
                         : () {
-
                             // CREATE
                             if (!isEdit) {
-
-                              context.read<ProductBloc>()
-                                  .add(
-
+                              final String? token = context
+                                  .read<AuthCubit>()
+                                  .state
+                                  .token;
+                              if (token == null) return;
+                              context.read<ProductBloc>().add(
                                 CreateProduct(
-                                  name:
-                                      nameController.text,
+                                  name: nameController.text,
 
-                                  description:
-                                      descriptionController.text,
+                                  description: descriptionController.text,
 
-                                  stock: int.parse(
-                                    stockController.text,
-                                  ),
+                                  stock: int.parse(stockController.text),
 
                                   available: available,
+                                  token: token,
                                 ),
                               );
                             }
-
                             // UPDATE
                             else {
-
-                              context.read<ProductBloc>()
-                                  .add(
-
+                              final String? token = context
+                                  .read<AuthCubit>()
+                                  .state
+                                  .token;
+                              if (token == null) return;
+                              context.read<ProductBloc>().add(
                                 UpdateProduct(
-
-                                  documentId:
-                                      widget.product!
-                                          .documentid,
-
-                                  name:
-                                      nameController.text,
-
-                                  description:
-                                      descriptionController.text,
-
-                                  stock: int.parse(
-                                    stockController.text,
-                                  ),
+                                  documentId: widget.product!.documentid,
+                                  name: nameController.text,
+                                  description: descriptionController.text,
+                                  stock: int.parse(stockController.text),
 
                                   available: available,
+                                  token: token,
                                 ),
                               );
                             }
                           },
 
                     child: state is ProductLoading
-
                         ? const CircularProgressIndicator()
-
-                        : Text(
-                            isEdit
-                                ? 'Update Product'
-                                : 'Create Product',
-                          ),
+                        : Text(isEdit ? 'Update Product' : 'Create Product'),
                   ),
                 ),
               ],

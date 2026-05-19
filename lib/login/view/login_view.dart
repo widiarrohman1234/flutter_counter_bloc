@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_counter_bloc/auth/cubit/auth_cubit.dart';
 import 'package:flutter_counter_bloc/login/bloc/login_bloc.dart';
 
 class LoginView extends StatefulWidget {
@@ -12,8 +13,12 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final TextEditingController _username = TextEditingController(text: "arrohmanwidi@gmail.com");
-  final TextEditingController _password = TextEditingController(text: "12341234");
+  final TextEditingController _username = TextEditingController(
+    text: "arrohmanwidi@gmail.com",
+  );
+  final TextEditingController _password = TextEditingController(
+    text: "12341234",
+  );
 
   @override
   void dispose() {
@@ -29,9 +34,15 @@ class _LoginViewState extends State<LoginView> {
       listener: (context, state) {
         // jika state login success
         if (state is LoginSuccess) {
+          // simpan token global
+          context.read<AuthCubit>().setLogin(token: state.login.jwt);
+
+          // show snackbar
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text("Login succesful")));
+
+          // delay 1 detil, navigator ke home
           Future.delayed(Duration(seconds: 1), () {
             Navigator.pushReplacementNamed(context, '/home');
           });

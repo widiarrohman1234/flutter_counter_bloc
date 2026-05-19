@@ -25,15 +25,13 @@ final class ProductLoaded extends ProductState {
 
 // PRODUCT DETAIL
 final class ProductDetailLoaded extends ProductState {
-  // final ProductModel product;
-  final documentId;
+  final ProductDetailModel product_detail;
 
-  const ProductDetailLoaded({required this.documentId});
+  const ProductDetailLoaded({required this.product_detail});
 
   @override
-  List<Object> get props => [documentId];
+  List<Object> get props => [product_detail];
 
-  get product => null;
 }
 
 // SUCCESS

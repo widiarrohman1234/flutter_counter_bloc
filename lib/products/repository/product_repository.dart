@@ -4,7 +4,6 @@ import 'package:flutter_counter_bloc/products/models/product_delete.dart';
 import 'package:flutter_counter_bloc/products/models/product_detail.dart';
 import 'package:flutter_counter_bloc/products/models/product_list.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_counter_bloc/products/models/product_model.dart';
 
 class ProductRepository {
   final http.Client httpClient;
@@ -70,7 +69,8 @@ class ProductRepository {
           'stock': stock,
           'image_url': imageUrl,
           'expired': expired,
-          'id_category': idCategory,
+          // 'id_category': idCategory,
+          'id_category': "83b579b2ea3c4033b6d3bc0891679aec",
           'description': description,
         },
       }),

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_counter_bloc/products/models/product_detail.dart';
 import 'package:flutter_counter_bloc/products/models/product_model.dart';
 import 'package:flutter_counter_bloc/products/repository/product_repository.dart';
 
@@ -9,9 +10,7 @@ part 'product_state.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductRepository repository;
 
-  final String token;
-
-  ProductBloc({required this.repository, required this.token}) : super(ProductInitial()) {
+  ProductBloc({required this.repository}) : super(ProductInitial()) {
     on<FetchProducts>(_onFetchProducts);
 
     on<FetchProductDetail>(_onFetchProductDetail);
@@ -32,7 +31,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     emit(ProductLoading());
 
     try {
-      final response = await repository.findAll(token: token);
+      final response = await repository.findAll(token: event.token);
 
       emit(ProductLoaded(products: response.data));
     } catch (e) {
@@ -50,11 +49,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     try {
       final response = await repository.findOne(
-        token: token,
+        token: event.token,
         documentId: event.documentId,
       );
 
-      emit(ProductDetailLoaded(documentId: response.data?.documentid));
+      emit(ProductDetailLoaded(product_detail: response));
     } catch (e) {
       emit(ProductFailure(message: e.toString()));
     }
@@ -70,7 +69,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     try {
       await repository.create(
-        token: token,
+        token: event.token,
 
         name: event.name,
 
@@ -83,7 +82,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
       emit(const ProductSuccess(message: 'Product berhasil dibuat'));
 
-      add(FetchProducts());
+      add(FetchProducts(token: event.token));
     } catch (e) {
       emit(ProductFailure(message: e.toString()));
     }
@@ -99,7 +98,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     try {
       await repository.update(
-        token: token,
+        token: event.token,
 
         documentId: event.documentId,
 
@@ -114,7 +113,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
       emit(const ProductSuccess(message: 'Product berhasil diupdate'));
 
-      add(FetchProducts());
+      add(FetchProducts(token: event.token));
     } catch (e) {
       emit(ProductFailure(message: e.toString()));
     }
@@ -130,14 +129,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     try {
       await repository.delete(
-        token: token,
+        token: event.token,
 
         documentId: event.documentId,
       );
 
       emit(const ProductSuccess(message: 'Product berhasil dihapus'));
 
-      add(FetchProducts());
+      add(FetchProducts(token: event.token));
     } catch (e) {
       emit(ProductFailure(message: e.toString()));
     }

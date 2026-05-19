@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_counter_bloc/auth/cubit/auth_cubit.dart';
 import 'package:flutter_counter_bloc/core/theme/theme_cubit.dart';
 import 'package:flutter_counter_bloc/counter/counter.dart';
 import 'package:flutter_counter_bloc/home/view/home_page.dart';
@@ -43,10 +44,9 @@ class CounterApp extends StatelessWidget {
           BlocProvider(
             create: (context) => ProductBloc(
               repository: context.read<ProductRepository>(),
-              token:
-                  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhcnJvaG1hbndpZGlAZ21haWwuY29tIiwiaWF0IjoxNzc5MTQ1NzQ0fQ.2s54oZdKLkGYZQUVIb8ZLot0biNNGKPJaLwmJbfdOIs',
             ),
           ),
+          BlocProvider(create: (_) => AuthCubit()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, state) {

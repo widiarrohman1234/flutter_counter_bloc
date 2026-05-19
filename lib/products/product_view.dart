@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_counter_bloc/auth/cubit/auth_cubit.dart';
 import 'package:flutter_counter_bloc/products/bloc/product_bloc.dart';
 
 import 'product_detail_page.dart';
@@ -16,8 +17,9 @@ class _ProductViewState extends State<ProductView> {
   @override
   void initState() {
     super.initState();
-
-    context.read<ProductBloc>().add(FetchProducts());
+    final String? token = context.read<AuthCubit>().state.token;
+    if (token == null) return;
+    context.read<ProductBloc>().add(FetchProducts(token: token));
   }
 
   @override
@@ -54,7 +56,9 @@ class _ProductViewState extends State<ProductView> {
 
             return RefreshIndicator(
               onRefresh: () async {
-                context.read<ProductBloc>().add(FetchProducts());
+                final String? token = context.read<AuthCubit>().state.token;
+
+                context.read<ProductBloc>().add(FetchProducts(token: token!));
               },
 
               child: ListView.builder(
@@ -154,10 +158,15 @@ class _ProductViewState extends State<ProductView> {
                                     ElevatedButton(
                                       onPressed: () {
                                         Navigator.pop(context);
+                                        final String? token = context
+                                            .read<AuthCubit>()
+                                            .state
+                                            .token;
 
                                         context.read<ProductBloc>().add(
                                           DeleteProduct(
                                             documentId: product.documentid,
+                                            token: token!,
                                           ),
                                         );
                                       },
