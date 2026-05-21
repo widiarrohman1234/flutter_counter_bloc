@@ -13,6 +13,9 @@ import 'package:flutter_counter_bloc/posts/view/posts_page.dart';
 import 'package:flutter_counter_bloc/products/bloc/product_bloc.dart';
 import 'package:flutter_counter_bloc/products/repository/product_repository.dart';
 import 'package:flutter_counter_bloc/products/view/product_page.dart';
+import 'package:flutter_counter_bloc/register/bloc/register_bloc.dart';
+import 'package:flutter_counter_bloc/register/repository/register_repository.dart';
+import 'package:flutter_counter_bloc/register/view/register_page.dart';
 import 'package:http/http.dart' as http;
 
 class CounterApp extends StatelessWidget {
@@ -28,6 +31,9 @@ class CounterApp extends StatelessWidget {
         RepositoryProvider(
           create: (_) => ProductRepository(httpClient: http.Client()),
         ),
+        RepositoryProvider(
+          create: (_) => RegisterRepository(httpClient: http.Client()),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -42,8 +48,12 @@ class CounterApp extends StatelessWidget {
                 LoginBloc(loginRepository: context.read<LoginRepository>()),
           ),
           BlocProvider(
-            create: (context) => ProductBloc(
-              repository: context.read<ProductRepository>(),
+            create: (context) =>
+                ProductBloc(repository: context.read<ProductRepository>()),
+          ),
+          BlocProvider(
+            create: (context) => RegisterBloc(
+              registerRepository: context.read<RegisterRepository>(),
             ),
           ),
           BlocProvider(create: (_) => AuthCubit()),
@@ -62,6 +72,7 @@ class CounterApp extends StatelessWidget {
                 '/posts': (_) => const PostsPage(),
                 '/login': (_) => const LoginPage(),
                 '/products': (_) => const ProductPage(),
+                '/register': (_) => const RegisterPage(),
               },
             );
           },

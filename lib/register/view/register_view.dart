@@ -1,60 +1,42 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_counter_bloc/auth/cubit/auth_cubit.dart';
-import 'package:flutter_counter_bloc/login/bloc/login_bloc.dart';
+import 'package:flutter_counter_bloc/register/bloc/register_bloc.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
-  final TextEditingController _username = TextEditingController(
-    // text: "arrohmanwidi@gmail.com",
-  );
-  final TextEditingController _password = TextEditingController(
-    // text: "12341234",
-  );
-
-  @override
-  void dispose() {
-    _username.dispose();
-    _password.dispose();
-    super.dispose();
-  }
+class _RegisterViewState extends State<RegisterView> {
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(
-      // Listener untuk mendengarkan perubahan state
+    return BlocConsumer<RegisterBloc, RegisterState>(
       listener: (context, state) {
-        // jika state login success
-        if (state is LoginSuccess) {
-          // simpan token global
-          context.read<AuthCubit>().setLogin(token: state.login.data!.jwt);
-
+        // berhasil
+        if (state is RegisterSuccess) {
           // show snackbar
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text("Login succesful")));
-
+          ).showSnackBar(SnackBar(content: Text(state.message)));
           // delay 1 detil, navigator ke home
           Future.delayed(Duration(seconds: 1), () {
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, '/login');
           });
         }
 
-        // jika state login failure
-        if (state is LoginFailure) {
+        // gagal
+        if (state is RegisterFailure) {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text("Login Failed"),
-              content: Text("Username atau password salah"),
+              title: Text("Register Failed"),
+              content: Text(state.message),
               actions: [
                 TextButton(
                   child: Text("OK"),
@@ -67,14 +49,13 @@ class _LoginViewState extends State<LoginView> {
           );
         }
       },
-      // Builder untuk menampilkan UI
       builder: (context, state) {
-        // jika state sedang loading maka tampilkan Circular Progress Indicator
-        if (state is LoginLoading) {
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
+        if (state is RegisterLoading) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
 
-        // jika sudah selesai login, tampilkan halaman
         return Scaffold(
           body: SafeArea(
             child: Center(
@@ -85,10 +66,19 @@ class _LoginViewState extends State<LoginView> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "Login",
+                      "Register Page",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     SizedBox(height: 32.0),
+                    TextField(
+                      controller: _email,
+                      decoration: const InputDecoration(
+                        labelText: "Email",
+                        hintText: "Input email",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
                     TextField(
                       controller: _username,
                       decoration: const InputDecoration(
@@ -113,24 +103,16 @@ class _LoginViewState extends State<LoginView> {
                       width: 200,
                       child: ElevatedButton(
                         onPressed: () {
-                          print("login pressed");
-                          // gunakan BLoC, bukan if else lagi
-                          context.read<LoginBloc>().add(
-                            LoginSubmitted(
-                              identifier: _username.text,
+                          context.read<RegisterBloc>().add(
+                            RegisterSubmitted(
+                              email: _email.text,
+                              username: _username.text,
                               password: _password.text,
                             ),
                           );
                         },
-                        child: Text("Login"),
+                        child: Text("Register"),
                       ),
-                    ),
-                    SizedBox(height: 8.0),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/register');
-                      },
-                      child: Text("Don't have an account? Register here"),
                     ),
                   ],
                 ),
