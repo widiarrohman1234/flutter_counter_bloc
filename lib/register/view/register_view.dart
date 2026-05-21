@@ -57,6 +57,7 @@ class _RegisterViewState extends State<RegisterView> {
         }
 
         return Scaffold(
+          appBar: AppBar(title: Text("Register Page"),),
           body: SafeArea(
             child: Center(
               child: SingleChildScrollView(
