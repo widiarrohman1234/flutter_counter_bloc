@@ -35,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
         // jika state login success
         if (state is LoginSuccess) {
           // simpan token global
-          context.read<AuthCubit>().setLogin(token: state.login.jwt);
+          context.read<AuthCubit>().setLogin(token: state.login.data!.jwt);
 
           // show snackbar
           ScaffoldMessenger.of(
