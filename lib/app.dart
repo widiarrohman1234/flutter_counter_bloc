@@ -11,8 +11,8 @@ import 'package:flutter_counter_bloc/posts/bloc/post_bloc.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_event.dart';
 import 'package:flutter_counter_bloc/posts/view/posts_page.dart';
 import 'package:flutter_counter_bloc/products/bloc/product_bloc.dart';
-import 'package:flutter_counter_bloc/products/product_page.dart';
 import 'package:flutter_counter_bloc/products/repository/product_repository.dart';
+import 'package:flutter_counter_bloc/products/view/product_page.dart';
 import 'package:http/http.dart' as http;
 
 class CounterApp extends StatelessWidget {

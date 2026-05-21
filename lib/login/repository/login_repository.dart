@@ -23,6 +23,8 @@ class LoginRepository {
       body: jsonEncode({'identifier': identifier, 'password': password}),
     );
 
+    print(response.body);
+
     if (response.statusCode != 200) {
       throw Exception('LoginModel gagal');
     }

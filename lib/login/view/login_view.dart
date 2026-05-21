@@ -14,10 +14,10 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _username = TextEditingController(
-    text: "arrohmanwidi@gmail.com",
+    // text: "arrohmanwidi@gmail.com",
   );
   final TextEditingController _password = TextEditingController(
-    text: "12341234",
+    // text: "12341234",
   );
 
   @override

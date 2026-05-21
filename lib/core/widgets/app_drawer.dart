@@ -16,7 +16,7 @@ class AppDrawer extends StatelessWidget {
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/home');
             },
           ),
           const Divider(),
