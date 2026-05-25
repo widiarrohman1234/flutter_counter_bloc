@@ -13,17 +13,15 @@ class CounterView extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return MultiBlocListener(
       listeners: [
+        // bloc listener untuk counter
         BlocListener<CounterCubit, CounterState>(
           listener: (context, state) {
-            // TODO: implement listener
-
-            // jika sampai 10 tampilkan snacbBar menggunakan BlocListener
+            // jika sampai 10 tampilkan snacBar menggunakan BlocListener
             if (state.counter == 10) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Counter mencapai 10")),
               );
             }
-
             // jika counter < 0, maka tampilkan alert dialog
             if (state.counter < 0) {
               showDialog(
@@ -39,6 +37,7 @@ class CounterView extends StatelessWidget {
           },
         ),
 
+        // Bloc Listener untuk theme
         BlocListener<ThemeCubit, ThemeMode>(
           listener: (context, state) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -54,6 +53,7 @@ class CounterView extends StatelessWidget {
         ),
       ],
       child: Scaffold(
+        
         appBar: AppBar(
           title: Text("Counter Page"),
           actions: [
@@ -68,9 +68,10 @@ class CounterView extends StatelessWidget {
         drawer: AppDrawer(),
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // build semua widget yang ada didalam ini jika ada event(perubahan)
               BlocBuilder<CounterCubit, CounterState>(
                 builder: (context, state) {
                   return Text(
@@ -79,7 +80,6 @@ class CounterView extends StatelessWidget {
                   );
                 },
               ),
-
               // hanya build widget tertentu, tidak perlu semuanya
               BlocSelector<CounterCubit, CounterState, bool>(
                 selector: (state) => state.isEven,

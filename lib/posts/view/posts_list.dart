@@ -28,29 +28,21 @@ class _PostsListState extends State<PostsList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
-      builder: (context, state) {
-        switch (state.status) {
-          case PostStatus.failure:
-            print('failed to fetch data posts');
-            return Scaffold(
-              appBar: AppBar(
-                title: Text("Post List"),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      context.read<ThemeCubit>().toggleTheme();
-                    },
-                    icon: Icon(Icons.dark_mode),
-                  ),
-                ],
-              ),
-              drawer: AppDrawer(),
-              body: Center(child: Text('Failed to fetch data posts')),
-            );
-          case PostStatus.success:
-            if (state.posts.isEmpty) {
-              print('no posts');
+    return BlocListener<ThemeCubit, ThemeMode>(
+      listener: (context, state) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              state == ThemeMode.dark ? "Dark Mode Aktif" : "Light Mode Aktif",
+            ),
+          ),
+        );
+      },
+      child: BlocBuilder<PostBloc, PostState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case PostStatus.failure:
+              print('failed to fetch data posts');
               return Scaffold(
                 appBar: AppBar(
                   title: Text("Post List"),
@@ -64,39 +56,58 @@ class _PostsListState extends State<PostsList> {
                   ],
                 ),
                 drawer: AppDrawer(),
-                body: Center(child: Text('no posts')),
+                body: Center(child: Text('Failed to fetch data posts')),
               );
-            }
-            return Scaffold(
-              appBar: AppBar(
-                title: Text("Post List"),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      context.read<ThemeCubit>().toggleTheme();
-                    },
-                    icon: Icon(Icons.dark_mode),
+            case PostStatus.success:
+              if (state.posts.isEmpty) {
+                print('no posts');
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text("Post List"),
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          context.read<ThemeCubit>().toggleTheme();
+                        },
+                        icon: Icon(Icons.dark_mode),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              drawer: AppDrawer(),
-              body: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return index >= state.posts.length
-                      ? const BottomLoader()
-                      : PostListItem(post: state.posts[index]);
-                },
-                itemCount: state.hasReachedMax
-                    ? state.posts.length
-                    : state.posts.length + 1,
-                controller: _scrollController,
-              ),
-            );
+                  drawer: AppDrawer(),
+                  body: Center(child: Text('no posts')),
+                );
+              }
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text("Post List"),
+                  actions: [
+                    IconButton(
+                      onPressed: () {
+                        context.read<ThemeCubit>().toggleTheme();
+                      },
+                      icon: Icon(Icons.dark_mode),
+                    ),
+                  ],
+                ),
+                drawer: AppDrawer(),
+                body: ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return index >= state.posts.length
+                        ? const BottomLoader()
+                        : PostListItem(post: state.posts[index]);
+                  },
+                  itemCount: state.hasReachedMax
+                      ? state.posts.length
+                      : state.posts.length + 1,
+                  controller: _scrollController,
+                ),
+              );
 
-          case PostStatus.initial:
-            return const Center(child: CircularProgressIndicator());
-        }
-      },
+            case PostStatus.initial:
+              return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 
