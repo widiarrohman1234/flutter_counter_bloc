@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_counter_bloc/login/bloc/login_bloc.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -8,7 +10,87 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          DrawerHeader(child: Text("BLoC Cubit")),
+          BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              return DrawerHeader(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.blue, Colors.indigo],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.flutter_dash,
+                        size: 35,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+
+                    Text(
+                      "BLoC Cubit",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+
+                    BlocBuilder<LoginBloc, LoginState>(
+                      builder: (context, state) {
+                        if (state is LoginSuccess) {
+                          final data = state.login.data!.user;
+                          return Row(
+                            children: [
+                              Icon(
+                                Icons.person,
+                                color: Colors.white70,
+                                size: 16,
+                              ),
+                              SizedBox(height: 6),
+                              Text(
+                                data!.username,
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        return Row(
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              color: Colors.white70,
+                              size: 16,
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              "Unauthorized",
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
           ListTile(
             title: Text("Home"),
             subtitle: const Text('Software Engineer'),
@@ -45,7 +127,11 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             title: Text("Product"),
             subtitle: const Text('Melihat halaman produk'),
-            leading: const Icon(Icons.store_outlined, size: 40, color: Colors.blue),
+            leading: const Icon(
+              Icons.store_outlined,
+              size: 40,
+              color: Colors.blue,
+            ),
             trailing: const Icon(Icons.logout),
             onTap: () {
               Navigator.pop(context);
@@ -53,16 +139,22 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           const Divider(),
+          // profile
           ListTile(
-            title: Text("Logout"),
-            subtitle: const Text('Keluar dari aplikasi'),
-            leading: const Icon(Icons.logout, size: 40, color: Colors.blue),
-            trailing: const Icon(Icons.logout),
+            title: Text("Profile"),
+            subtitle: const Text('Melihat halaman profile'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            leading: const Icon(
+              Icons.account_circle_outlined,
+              size: 40,
+              color: Colors.blue,
+            ),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/login');
+              Navigator.pushNamed(context, '/profile');
             },
           ),
+          
         ],
       ),
     );

@@ -6,6 +6,7 @@ import 'package:flutter_counter_bloc/counter/counter.dart';
 import 'package:flutter_counter_bloc/home/view/home_page.dart';
 import 'package:flutter_counter_bloc/login/bloc/login_bloc.dart';
 import 'package:flutter_counter_bloc/login/repository/login_repository.dart';
+import 'package:flutter_counter_bloc/login/view/change_password_page.dart';
 import 'package:flutter_counter_bloc/login/view/login_page.dart';
 import 'package:flutter_counter_bloc/register/bloc/register_bloc.dart';
 import 'package:flutter_counter_bloc/register/repository/register_repository.dart';
@@ -16,6 +17,9 @@ import 'package:flutter_counter_bloc/posts/view/posts_page.dart';
 import 'package:flutter_counter_bloc/products/bloc/product_bloc.dart';
 import 'package:flutter_counter_bloc/products/repository/product_repository.dart';
 import 'package:flutter_counter_bloc/products/view/product_page.dart';
+import 'package:flutter_counter_bloc/profile/bloc/profile_bloc.dart';
+import 'package:flutter_counter_bloc/profile/repository/profile_repository.dart';
+import 'package:flutter_counter_bloc/profile/view/profile_page.dart';
 import 'package:http/http.dart' as http;
 
 class CounterApp extends StatelessWidget {
@@ -33,7 +37,10 @@ class CounterApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (_) => RegisterRepository(httpClient: http.Client()),
-        )
+        ),
+        RepositoryProvider(
+          create: (_) => ProfileRepository(httpClient: http.Client()),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -57,6 +64,11 @@ class CounterApp extends StatelessWidget {
               registerRepository: context.read<RegisterRepository>(),
             ),
           ),
+          BlocProvider(
+            create: (context) => ProfileBloc(
+              profileRepository: context.read<ProfileRepository>(),
+            ),
+          ),
           BlocProvider(create: (_) => AuthCubit()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
@@ -74,6 +86,9 @@ class CounterApp extends StatelessWidget {
                 '/login': (_) => const LoginPage(),
                 '/products': (_) => const ProductPage(),
                 '/register': (_) => const RegisterPage(),
+                '/profile': (_) => const ProfilePage(),
+                '/change-password': (_) => const ChangePasswordPage(),
+                
               },
             );
           },

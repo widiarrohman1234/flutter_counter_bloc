@@ -10,7 +10,7 @@ class LoginRepository {
 
   LoginRepository({required this.httpClient});
 
-  // LOGIN
+  // POST LOGIN
   Future<LoginModel> login({
     required String identifier,
     required String password,
@@ -34,24 +34,7 @@ class LoginRepository {
     return LoginModel.fromMap(json);
   }
 
-  // GET PROFILE
-  Future<UserModel> getProfile({required String token}) async {
-    final response = await httpClient.get(
-      Uri.parse('https://api.ppb.widiarrohman.my.id/api/users/me'),
-
-      headers: {'Authorization': 'Bearer $token'},
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Gagal mengambil profile');
-    }
-
-    final json = jsonDecode(response.body);
-
-    return UserModel.fromMap(json);
-  }
-
-  // LOGOUT
+  // POST LOGOUT
   Future<void> logout() async {
     final response = await httpClient.post(
       Uri.parse('https://api.ppb.widiarrohman.my.id/api/auth/logout'),
