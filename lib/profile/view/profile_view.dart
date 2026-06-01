@@ -16,7 +16,6 @@ class _ProfileViewState extends State<ProfileView> {
   late int blocked = 0;
   bool get isBlocked => blocked == 1 ? true : false;
 
-
   final _formKey = GlobalKey<FormState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -81,6 +80,11 @@ class _ProfileViewState extends State<ProfileView> {
                 // build form
                 buildForm(),
 
+                SizedBox(height: 20),
+
+                // build danger zone delete account
+                buildDangerZone(context),
+
                 SizedBox(height: 32),
 
                 // build logout button
@@ -91,6 +95,58 @@ class _ProfileViewState extends State<ProfileView> {
         );
       },
     );
+  }
+
+  Container buildDangerZone(BuildContext context) {
+    return Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.red.shade200),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.red.shade50,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Danger Zone",
+                      style: TextStyle(
+                        color: Colors.red.shade700,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    Text(
+                      "These actions may affect your account permanently.",
+                      style: TextStyle(color: Colors.grey.shade700),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    /// DELETE ACCOUNT
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.red,
+                          side: const BorderSide(color: Colors.red),
+                        ),
+                        icon: const Icon(Icons.delete_forever),
+                        label: const Text("Delete Account"),
+                        onPressed: () {
+                          // _showDeleteAccountDialog();
+                          Navigator.pushNamed(context, '/delete-account');
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
   }
 
   Column buildProfileBuilder() {

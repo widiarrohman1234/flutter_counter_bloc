@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_counter_bloc/auth/cubit/auth_cubit.dart';
 import 'package:flutter_counter_bloc/core/theme/theme_cubit.dart';
 import 'package:flutter_counter_bloc/counter/counter.dart';
+import 'package:flutter_counter_bloc/delete_account/bloc/delete_account_bloc.dart';
+import 'package:flutter_counter_bloc/delete_account/repository/delete_account_repository.dart';
+import 'package:flutter_counter_bloc/delete_account/view/delete_account_view.dart';
 import 'package:flutter_counter_bloc/home/view/home_page.dart';
 import 'package:flutter_counter_bloc/login/bloc/login_bloc.dart';
 import 'package:flutter_counter_bloc/login/repository/login_repository.dart';
@@ -42,6 +45,9 @@ class CounterApp extends StatelessWidget {
         RepositoryProvider(
           create: (_) => ProfileRepository(httpClient: http.Client()),
         ),
+        RepositoryProvider(
+          create: (_) => DeleteAccountRepository(httpClient: http.Client()),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -56,9 +62,8 @@ class CounterApp extends StatelessWidget {
                 LoginBloc(loginRepository: context.read<LoginRepository>()),
           ),
           BlocProvider(
-            create: (context) => ProductBloc(
-              repository: context.read<ProductRepository>(),
-            ),
+            create: (context) =>
+                ProductBloc(repository: context.read<ProductRepository>()),
           ),
           BlocProvider(
             create: (context) => RegisterBloc(
@@ -68,6 +73,11 @@ class CounterApp extends StatelessWidget {
           BlocProvider(
             create: (context) => ProfileBloc(
               profileRepository: context.read<ProfileRepository>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => DeleteAccountBloc(
+              deleteAccountRepository: context.read<DeleteAccountRepository>(),
             ),
           ),
           BlocProvider(create: (_) => AuthCubit()),
@@ -90,7 +100,7 @@ class CounterApp extends StatelessWidget {
                 '/profile': (_) => const ProfilePage(),
                 '/change-password': (_) => const ChangePasswordPage(),
                 '/update-profile': (_) => const ProfileEdit(),
-                
+                '/delete-account': (_) => const DeleteAccountView(),
               },
             );
           },
