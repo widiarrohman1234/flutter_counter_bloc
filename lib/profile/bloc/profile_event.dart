@@ -15,3 +15,13 @@ final class LoadProfile extends ProfileEvent {
   @override
   List<Object> get props => [token];
 }
+
+final class UpdateProfileEvent extends ProfileEvent {
+  final String username;
+  final String email;
+
+  const UpdateProfileEvent({required this.username, required this.email});
+
+  @override
+  List<Object> get props => [username, email];
+}

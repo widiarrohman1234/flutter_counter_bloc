@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_counter_bloc/login/models/login_model.dart';
 import 'package:flutter_counter_bloc/login/repository/login_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -26,6 +28,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         identifier: event.identifier,
         password: event.password,
       );
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', login.data!.jwt);
 
       emit(LoginSuccess(login: login));
     } catch (e) {

@@ -24,7 +24,6 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
     super.initState();
-    // load profile
     final token = context.read<AuthCubit>().state.token;
     context.read<ProfileBloc>().add(LoadProfile(token: token!));
   }
@@ -186,6 +185,7 @@ class _ProfileViewState extends State<ProfileView> {
               label: Text("Update Profile"),
               icon: Icon(Icons.save),
               onPressed: () {
+                Navigator.pushNamed(context, '/update-profile');
                 print("update profile");
               },
             ),

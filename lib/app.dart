@@ -8,6 +8,7 @@ import 'package:flutter_counter_bloc/login/bloc/login_bloc.dart';
 import 'package:flutter_counter_bloc/login/repository/login_repository.dart';
 import 'package:flutter_counter_bloc/login/view/change_password_page.dart';
 import 'package:flutter_counter_bloc/login/view/login_page.dart';
+import 'package:flutter_counter_bloc/profile/view/profile_edit.dart';
 import 'package:flutter_counter_bloc/register/bloc/register_bloc.dart';
 import 'package:flutter_counter_bloc/register/repository/register_repository.dart';
 import 'package:flutter_counter_bloc/register/view/register_page.dart';
@@ -88,6 +89,7 @@ class CounterApp extends StatelessWidget {
                 '/register': (_) => const RegisterPage(),
                 '/profile': (_) => const ProfilePage(),
                 '/change-password': (_) => const ChangePasswordPage(),
+                '/update-profile': (_) => const ProfileEdit(),
                 
               },
             );
