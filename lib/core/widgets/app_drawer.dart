@@ -123,21 +123,21 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/posts');
             },
           ),
-          const Divider(),
-          ListTile(
-            title: Text("Product"),
-            subtitle: const Text('Melihat halaman produk'),
-            leading: const Icon(
-              Icons.store_outlined,
-              size: 40,
-              color: Colors.blue,
-            ),
-            trailing: const Icon(Icons.logout),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/products');
-            },
-          ),
+          // const Divider(),
+          // ListTile(
+          //   title: Text("Product"),
+          //   subtitle: const Text('Melihat halaman produk'),
+          //   leading: const Icon(
+          //     Icons.store_outlined,
+          //     size: 40,
+          //     color: Colors.blue,
+          //   ),
+          //   trailing: const Icon(Icons.logout),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.pushNamed(context, '/products');
+          //   },
+          // ),
           const Divider(),
           // profile
           ListTile(
