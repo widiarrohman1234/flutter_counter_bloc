@@ -2,7 +2,11 @@ part of 'register_bloc.dart';
 
 sealed class RegisterState extends Equatable {
   const RegisterState();
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> experiment-copy
   @override
   List<Object> get props => [];
 }

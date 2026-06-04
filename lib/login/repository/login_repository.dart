@@ -10,7 +10,7 @@ class LoginRepository {
 
   LoginRepository({required this.httpClient});
 
-  // LOGIN
+  // POST LOGIN
   Future<LoginModel> login({
     required String identifier,
     required String password,
@@ -34,7 +34,11 @@ class LoginRepository {
     return LoginModel.fromMap(json);
   }
 
+<<<<<<< HEAD
   // LOGOUT
+=======
+  // POST LOGOUT
+>>>>>>> experiment-copy
   Future<void> logout() async {
     final response = await httpClient.post(
       Uri.parse('https://api.ppb.widiarrohman.my.id/api/auth/logout'),

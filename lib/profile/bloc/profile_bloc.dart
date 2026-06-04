@@ -10,20 +10,32 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileRepository profileRepository;
 
   ProfileBloc({required this.profileRepository}) : super(ProfileInitial()) {
+<<<<<<< HEAD
     on<ProfileEvent>(_onProfileEvent);
   }
 
   Future<void> _onProfileEvent(
     ProfileEvent event,
+=======
+    on<LoadProfile>(_onProfileEvent);
+  }
+
+  Future<void> _onProfileEvent(
+    LoadProfile event,
+>>>>>>> experiment-copy
     Emitter<ProfileState> emit,
   ) async {
     emit(ProfileLoading());
 
     try {
+<<<<<<< HEAD
       final ProfileModel profile = await profileRepository.getProfile(
         token: (event as LoadProfile).token,
       );
 
+=======
+      final profile = await profileRepository.getProfile(token: event.token);
+>>>>>>> experiment-copy
       emit(ProfileSuccess(profile: profile));
     } catch (e) {
       emit(ProfileFailure(message: e.toString()));

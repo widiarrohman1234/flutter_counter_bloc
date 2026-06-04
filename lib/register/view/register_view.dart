@@ -10,14 +10,21 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+<<<<<<< HEAD
   final TextEditingController _username = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
+=======
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+>>>>>>> experiment-copy
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RegisterBloc, RegisterState>(
       listener: (context, state) {
+<<<<<<< HEAD
         // berhasil
         if (state is RegisterSuccess) {
           // show snackbar
@@ -25,12 +32,22 @@ class _RegisterViewState extends State<RegisterView> {
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
           // delay 1 detil, navigator ke home
+=======
+        if (state is RegisterSuccess) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
+
+>>>>>>> experiment-copy
           Future.delayed(Duration(seconds: 1), () {
             Navigator.pushReplacementNamed(context, '/login');
           });
         }
 
+<<<<<<< HEAD
         // gagal
+=======
+>>>>>>> experiment-copy
         if (state is RegisterFailure) {
           showDialog(
             context: context,
@@ -55,6 +72,7 @@ class _RegisterViewState extends State<RegisterView> {
             body: Center(child: CircularProgressIndicator()),
           );
         }
+<<<<<<< HEAD
 
         return Scaffold(
           appBar: AppBar(title: Text("Register Page"),),
@@ -65,12 +83,26 @@ class _RegisterViewState extends State<RegisterView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
+=======
+        return Scaffold(
+          appBar: AppBar(title: Text("Register")),
+          body: SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+>>>>>>> experiment-copy
                   children: [
                     Text(
                       "Register Page",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     SizedBox(height: 32.0),
+<<<<<<< HEAD
+=======
+                    // email
+>>>>>>> experiment-copy
                     TextField(
                       controller: _email,
                       decoration: const InputDecoration(
@@ -80,6 +112,10 @@ class _RegisterViewState extends State<RegisterView> {
                       ),
                     ),
                     SizedBox(height: 8.0),
+<<<<<<< HEAD
+=======
+                    // username
+>>>>>>> experiment-copy
                     TextField(
                       controller: _username,
                       decoration: const InputDecoration(
@@ -89,6 +125,7 @@ class _RegisterViewState extends State<RegisterView> {
                       ),
                     ),
                     SizedBox(height: 8.0),
+<<<<<<< HEAD
                     TextField(
                       controller: _password,
                       obscureText: true,
@@ -99,6 +136,20 @@ class _RegisterViewState extends State<RegisterView> {
                       ),
                     ),
                     SizedBox(height: 8.0),
+=======
+                    // password
+                    TextField(
+                      controller: _password,
+                      decoration: const InputDecoration(
+                        labelText: "Password",
+                        hintText: "Input password",
+                        border: OutlineInputBorder(),
+                      ),
+                      obscureText: true,
+                    ),
+                    SizedBox(height: 8.0),
+                    // tombol register
+>>>>>>> experiment-copy
                     SizedBox(
                       height: 50,
                       width: 200,

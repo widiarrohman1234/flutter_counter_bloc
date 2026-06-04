@@ -6,7 +6,15 @@ class RegisterModel {
   final String message;
   final RegisterModelData? data;
 
+<<<<<<< HEAD
   RegisterModel({required this.success, required this.message, this.data});
+=======
+  RegisterModel({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
+>>>>>>> experiment-copy
 
   RegisterModel copyWith({
     bool? success,

@@ -3,10 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_counter_bloc/auth/cubit/auth_cubit.dart';
 import 'package:flutter_counter_bloc/core/theme/theme_cubit.dart';
 import 'package:flutter_counter_bloc/counter/counter.dart';
+import 'package:flutter_counter_bloc/delete_account/bloc/delete_account_bloc.dart';
+import 'package:flutter_counter_bloc/delete_account/repository/delete_account_repository.dart';
+import 'package:flutter_counter_bloc/delete_account/view/delete_account_view.dart';
 import 'package:flutter_counter_bloc/home/view/home_page.dart';
 import 'package:flutter_counter_bloc/login/bloc/login_bloc.dart';
 import 'package:flutter_counter_bloc/login/repository/login_repository.dart';
+import 'package:flutter_counter_bloc/login/view/change_password_page.dart';
 import 'package:flutter_counter_bloc/login/view/login_page.dart';
+import 'package:flutter_counter_bloc/profile/view/profile_edit.dart';
+import 'package:flutter_counter_bloc/register/bloc/register_bloc.dart';
+import 'package:flutter_counter_bloc/register/repository/register_repository.dart';
+import 'package:flutter_counter_bloc/register/view/register_page.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_bloc.dart';
 import 'package:flutter_counter_bloc/posts/bloc/post_event.dart';
 import 'package:flutter_counter_bloc/posts/view/posts_page.dart';
@@ -16,9 +24,6 @@ import 'package:flutter_counter_bloc/products/view/product_page.dart';
 import 'package:flutter_counter_bloc/profile/bloc/profile_bloc.dart';
 import 'package:flutter_counter_bloc/profile/repository/profile_repository.dart';
 import 'package:flutter_counter_bloc/profile/view/profile_page.dart';
-import 'package:flutter_counter_bloc/register/bloc/register_bloc.dart';
-import 'package:flutter_counter_bloc/register/repository/register_repository.dart';
-import 'package:flutter_counter_bloc/register/view/register_page.dart';
 import 'package:http/http.dart' as http;
 
 class CounterApp extends StatelessWidget {
@@ -33,12 +38,6 @@ class CounterApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (_) => ProductRepository(httpClient: http.Client()),
-        ),
-        RepositoryProvider(
-          create: (_) => RegisterRepository(httpClient: http.Client()),
-        ),
-        RepositoryProvider(
-          create: (_) => ProfileRepository(httpClient: http.Client()),
         ),
       ],
       child: MultiBlocProvider(
@@ -67,6 +66,11 @@ class CounterApp extends StatelessWidget {
               profileRepository: context.read<ProfileRepository>(),
             ),
           ),
+          BlocProvider(
+            create: (context) => DeleteAccountBloc(
+              deleteAccountRepository: context.read<DeleteAccountRepository>(),
+            ),
+          ),
           BlocProvider(create: (_) => AuthCubit()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
@@ -83,8 +87,6 @@ class CounterApp extends StatelessWidget {
                 '/posts': (_) => const PostsPage(),
                 '/login': (_) => const LoginPage(),
                 '/products': (_) => const ProductPage(),
-                '/register': (_) => const RegisterPage(),
-                '/profile': (_) => const ProfilePage(),
               },
             );
           },

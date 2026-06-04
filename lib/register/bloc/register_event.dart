@@ -12,11 +12,16 @@ final class RegisterSubmitted extends RegisterEvent {
   final String username;
   final String password;
 
+<<<<<<< HEAD
   const RegisterSubmitted({
     required this.email,
     required this.username,
     required this.password,
   });
+=======
+  const RegisterSubmitted({required this.email, required this.username, required this.password});
+
+>>>>>>> experiment-copy
   @override
   List<Object> get props => [email, username, password];
 }

@@ -7,8 +7,12 @@ class RegisterRepository {
   final http.Client httpClient;
 
   RegisterRepository({required this.httpClient});
+<<<<<<< HEAD
 
   // REGISTER
+=======
+  // Register
+>>>>>>> experiment-copy
   Future<RegisterModel> register({
     required String email,
     required String username,
@@ -16,6 +20,7 @@ class RegisterRepository {
   }) async {
     final response = await httpClient.post(
       Uri.parse('https://api.ppb.widiarrohman.my.id/api/auth/local/register'),
+<<<<<<< HEAD
 
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 
@@ -28,6 +33,17 @@ class RegisterRepository {
 
     if (response.statusCode != 201) {
       throw Exception('Error: ${response.statusCode}- ${responseBody['message']}');
+=======
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: {'email': email, 'username': username, 'password': password},
+    );
+    final responseBody = jsonDecode(response.body);
+
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      throw Exception(
+        'Error: ${response.statusCode} - ${responseBody['message']}',
+      );
+>>>>>>> experiment-copy
     }
 
     final json = jsonDecode(response.body);

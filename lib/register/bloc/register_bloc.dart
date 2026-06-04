@@ -12,11 +12,19 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc({required this.registerRepository}) : super(RegisterInitial()) {
     on<RegisterSubmitted>(_onRegisterSubmitted);
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> experiment-copy
   Future<void> _onRegisterSubmitted(
     RegisterSubmitted event,
     Emitter<RegisterState> emit,
   ) async {
     emit(RegisterLoading());
+<<<<<<< HEAD
+=======
+
+>>>>>>> experiment-copy
     try {
       final RegisterModel register = await registerRepository.register(
         email: event.email,

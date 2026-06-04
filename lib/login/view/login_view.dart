@@ -126,6 +126,10 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     ),
                     SizedBox(height: 8.0),
+<<<<<<< HEAD
+=======
+                    // tombol ke register
+>>>>>>> experiment-copy
                     TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, '/register');
