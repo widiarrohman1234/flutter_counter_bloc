@@ -11,11 +11,6 @@ final class LoadProfile extends ProfileEvent {
   final String token;
 
   const LoadProfile({required this.token});
-<<<<<<< HEAD
-  @override
-  List<Object> get props => [token];
-}
-=======
 
   @override
   List<Object> get props => [token];
@@ -30,4 +25,3 @@ final class UpdateProfileEvent extends ProfileEvent {
   @override
   List<Object> get props => [username, email];
 }
->>>>>>> experiment-copy

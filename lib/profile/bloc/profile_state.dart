@@ -10,7 +10,7 @@ sealed class ProfileState extends Equatable {
 final class ProfileInitial extends ProfileState {}
 
 final class ProfileLoading extends ProfileState {}
-
+s
 final class ProfileSuccess extends ProfileState {
   final ProfileModel profile;
 
@@ -24,11 +24,6 @@ final class ProfileFailure extends ProfileState {
   final String message;
 
   const ProfileFailure({required this.message});
-<<<<<<< HEAD
-  @override
-  List<Object> get props => [message];
-}
-=======
 
   @override
   List<Object> get props => [message];
@@ -37,4 +32,3 @@ final class ProfileFailure extends ProfileState {
 // update profile
 final class ProfileUpdating extends ProfileState {}
 final class ProfileUpdateSuccess extends ProfileState {}
->>>>>>> experiment-copy
